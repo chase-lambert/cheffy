@@ -1,10 +1,10 @@
 (ns app.auth.views.log-in
   (:require
-   ["@smooth-ui/core-sc" :refer [Box Button Col FormGroup Input Label Row]]
-   [app.components.page-nav :refer [page-nav]]
+   ["@smooth-ui/core-sc"      :refer [Box Button Col Row]]
+   [app.components.page-nav   :refer [page-nav]]
    [app.components.form-group :refer [form-group]]
    [re-frame.core :as rf]
-   [reagent.core :as r]))
+   [reagent.core  :as r]))
 
 (defn log-in []
   (let [initial-values {:email ""
