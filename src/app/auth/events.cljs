@@ -1,9 +1,29 @@
 (ns app.auth.events
   (:require
-    [re-frame.core :refer [reg-event-db reg-event-fx]]))
+    [cljs.reader :refer [read-string]]
+    [re-frame.core :refer [after reg-event-db reg-event-fx reg-cofx]]))
+
+(def cheffy-user-key "cheffy-user")
+
+(defn set-user-ls! [{:keys [auth]}]
+  (when (:uid auth)
+    (.setItem js/localStorage cheffy-user-key (str auth))))
+
+(defn remove-user-ls! []
+  (.remove js/localStorage cheffy-user-key))
+ 
+(def set-user-interceptors [(after set-user-ls!)])
+(def remove-user-interceptors [(after remove-user-ls!)])
+
+(reg-cofx 
+  :local-store-user
+  (fn [cofx _]
+    (assoc cofx :local-store-user (read-string 
+                                    (.getItem js/localStorage cheffy-user-key)))))
 
 (reg-event-fx
   :sign-up
+  set-user-interceptors
   (fn [{:keys [db]} [_ {:keys [first-name last-name email password]}]]
     {:db       (-> db
                    (assoc-in [:auth :uid] email)
@@ -19,6 +39,7 @@
   
 (reg-event-fx
   :log-in
+  set-user-interceptors
   (fn [{:keys [db]} [_ {:keys [email password]}]]
     (let [user (get-in db [:users email])
           correct-password? (= (get-in user [:profile :password]) password)]
@@ -37,6 +58,7 @@
 
 (reg-event-fx 
   :log-out
+  remove-user-interceptors
   (fn [{:keys [db]} _]
     {:db       (assoc-in db [:auth :uid] nil) 
      :dispatch [:set-active-nav :recipes]}))
@@ -49,6 +71,7 @@
       
 (reg-event-fx 
   :delete-account
+  remove-user-interceptors
   (fn [{:keys [db]} _]
     (let [uid (get-in db [:auth :uid])] 
       {:db       (-> db
