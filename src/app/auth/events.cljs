@@ -10,7 +10,7 @@
     (.setItem js/localStorage cheffy-user-key (str auth))))
 
 (defn remove-user-ls! []
-  (.remove js/localStorage cheffy-user-key))
+  (.removeItem js/localStorage cheffy-user-key))
  
 (def set-user-interceptors [(after set-user-ls!)])
 (def remove-user-interceptors [(after remove-user-ls!)])
