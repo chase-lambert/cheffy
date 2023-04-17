@@ -3,6 +3,7 @@
    ["@smooth-ui/core-sc"      :refer [Box Button Col Row]]
    [app.components.page-nav   :refer [page-nav]]
    [app.components.form-group :refer [form-group]]
+   [app.router :as router]
    [re-frame.core :as rf]
    [reagent.core  :as r]))
 
@@ -36,8 +37,8 @@
                  :justify-content "space-between"}
          [:> Box {:py 1
                   :pr 2}
-          [:a {:href "#log-in"
-               :on-click #(rf/dispatch [:set-active-nav :log-in])}
+          [:a {:href (router/path-for :log-in)
+               :on-click #(rf/dispatch [:set-active-page :log-in])}
            "Already have an account? Log in!"]]
          [:> Box 
           [:> Button {:on-click #(rf/dispatch [:sign-up @values])}

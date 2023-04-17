@@ -3,6 +3,7 @@
    ["@smooth-ui/core-sc"      :refer [Box Button Col Row]]
    [app.components.page-nav   :refer [page-nav]]
    [app.components.form-group :refer [form-group]]
+   [app.router :as router]
    [re-frame.core :as rf]
    [reagent.core  :as r]))
 
@@ -26,8 +27,8 @@
                  :justify-content "space-between"}
          [:> Box {:py 1
                   :pr 2}
-          [:a {:href "#sign-up"
-               :on-click #(rf/dispatch [:set-active-nav :sign-up])}
+          [:a {:href (router/path-for :sign-up)
+               :on-click #(rf/dispatch [:set-active-page :sign-up])}
            "New to Cheffy? Create an account!"]]
          [:> Box 
           [:> Button {:on-click #(rf/dispatch [:log-in @values])}
