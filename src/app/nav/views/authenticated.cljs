@@ -7,6 +7,7 @@
 
 (defn authenticated []
   (let [active-page @(rf/subscribe [:active-page])
+        chef? @(rf/subscribe [:chef?])
         nav-items [{:id :saved
                     :name "Saved"
                     :href (router/path-for :saved)
@@ -22,7 +23,8 @@
                    {:id :become-a-chef
                     :name "Chef"
                     :href (router/path-for :become-a-chef)
-                    :dispatch #(rf/dispatch [:set-active-nav :become-a-chef])}
+                    :dispatch #(rf/dispatch [:set-active-nav :become-a-chef])
+                    :hidden? chef?}
                    {:id :profile
                     :name "Profile"
                     :href (router/path-for :profile)
@@ -30,7 +32,8 @@
     [:> Box {:display "flex"
              :justify-content "flex-end"
              :py 1}
-     (for [{:keys [id name href dispatch]} nav-items]
+     (for [{:keys [id name href dispatch hidden?]} nav-items
+           :when (not hidden?)]
        ^{:key id}
        [nav-item {:id id
                   :name name

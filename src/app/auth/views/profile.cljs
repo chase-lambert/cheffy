@@ -7,7 +7,7 @@
     ["@smooth-ui/core-sc" :refer [Box Button Col Row Typography]]))
 
 (defn profile []
-  (let [{:keys [first-name last-name]} @(rf/subscribe [:active-user-profile])
+  (let [{:keys [first-name last-name]} @(rf/subscribe [:user-profile])
         initial-values {:first-name first-name 
                         :last-name  last-name}
         values (r/atom initial-values)]
@@ -19,7 +19,6 @@
                            "Log out"]}]
         [:> Row {:justify-content "center"}
           [:> Col {:xs 12 :sm 6}
-
             [:> Box {:background-color "white"
                      :border-radius 10
                      :p 3

@@ -1,14 +1,31 @@
 (ns app.auth.subs
   (:require
-    [re-frame.core :as rf]))
+    [re-frame.core :refer [reg-sub]]))
 
-(rf/reg-sub
+(reg-sub
   :logged-in?
   (fn [db _]
     (get-in db [:auth :uid])))
 
-(rf/reg-sub
-  :active-user-profile
+(reg-sub
+  :user-profile
   (fn [db _]
     (let [uid (get-in db [:auth :uid])]
       (get-in db [:users uid :profile]))))
+
+(reg-sub
+  :user
+  (fn [db _]
+    (let [uid (get-in db [:auth :uid])]
+      (get-in db [:users uid]))))
+
+(reg-sub 
+  :chef?
+  (fn [db _]
+    (let [uid (get-in db [:auth :uid])]
+      (= (get-in db [:users uid :role]) :chef))))
+
+(reg-sub
+  :user-image
+  (fn [db [_ uid]]
+    (get-in db [:users uid :profile :img])))

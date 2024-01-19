@@ -24,8 +24,12 @@
 (defn start! []
   (pushy/start! history))
 
-(defn path-for [route]
-  (bidi/path-for routes route))
+(def path-for 
+  (partial bidi/path-for routes))
 
 (defn set-token! [token]
   (pushy/set-token! history token))
+
+(comment
+  (path-for :recipe :recipe-id :rec-01)
+  ,)
