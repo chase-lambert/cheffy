@@ -1,10 +1,14 @@
 (ns app.nav.events
   (:require
-   [app.router    :as router]
-   [re-frame.core :refer [path reg-event-db reg-event-fx reg-fx]]
-   [day8.re-frame.tracing :refer-macros [fn-traced]]))
+   [app.helpers :refer [close-modal]]
+   [app.router :as router]
+   [app.spec :refer [check-spec-interceptor]]
+   [day8.re-frame.tracing :refer-macros [fn-traced]]
+   [re-frame.core :refer [path reg-event-db reg-event-fx reg-fx]]))
 
-(def nav-interceptors [(path :nav)])
+(def nav-interceptors [check-spec-interceptor
+                       (path :nav)])
+                       
 
 (reg-fx
   :navigate-to
@@ -41,9 +45,8 @@
 
 (reg-event-db
   :close-modal
-  nav-interceptors
-  (fn-traced [nav _]
-    (assoc nav :active-modal nil)))
+  (fn-traced [db _]
+    (close-modal db)))
 
 (reg-event-db
   :open-modal

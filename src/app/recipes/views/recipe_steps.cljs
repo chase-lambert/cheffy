@@ -1,6 +1,6 @@
 (ns app.recipes.views.recipe-steps
   (:require 
-   ["@smooth-ui/core-sc" :refer [Box Button Col Row Typography]]
+   ["@smooth-ui/core-sc" :refer [Box Button Col Row Textarea Typography]]
    ["styled-icons/fa-solid/Plus" :refer [Plus]]
    [app.components.form-group :refer [form-group]]
    [app.components.modal :refer [modal]]
@@ -58,7 +58,7 @@
                                         :label "Description"
                                         :type "text"
                                         :values values
-                                        :textarea true}]]
+                                        :element Textarea}]]
                     :footer [:<>
                              (when-let [step-id (:id @values)]
                                [:a {:href "#"

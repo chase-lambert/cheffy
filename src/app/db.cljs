@@ -1,6 +1,7 @@
 (ns app.db
   (:require
-    [re-frame.core :as rf]))
+   [app.spec :refer [check-spec-interceptor]]
+   [re-frame.core :as rf]))
 
 (def initial-app-db 
   {:auth    {:uid nil}
@@ -82,7 +83,8 @@
 
 (rf/reg-event-fx 
   :initialize-db
-  [(rf/inject-cofx :local-store-user)]
+  [(rf/inject-cofx :local-store-user)
+   check-spec-interceptor]
   (fn [{:keys [local-store-user]} _]
     {:db (assoc-in initial-app-db [:auth] local-store-user)})) 
   
